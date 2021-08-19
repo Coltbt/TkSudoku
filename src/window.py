@@ -1,6 +1,6 @@
 from grid import Grid, GridRenderer
 from vector import *
-from tkinter import Tk, Menu, Frame, Button, Label, filedialog, messagebox
+from tkinter import Tk, Menu, Frame, Button, Label, filedialog, messagebox, Toplevel
 from numpad import Numpad
 import os
 from PIL import Image, ImageTk
@@ -106,11 +106,15 @@ class Window(Tk):
 
         menu_file = Menu(menu_bar, tearoff=0)
         menu_file.add_command(label="Load", command=self.load)
-        menu_file.add_command(label="Save")
-        menu_file.add_command(label="Save as")
         menu_file.add_separator()
         menu_file.add_command(label="Quit", command=self.quit)
         menu_bar.add_cascade(label="File", menu=menu_file)
+
+        menu_help = Menu(menu_bar, tearoff=0)
+        menu_help.add_command(label="Keymap", command=self.keymap)
+        menu_help.add_command(label="Rules", command=self.rules)
+        menu_help.add_command(label="About", command=self.about)
+        menu_bar.add_cascade(label="Help", menu=menu_help)
 
         self.config(menu=menu_bar)
 
@@ -140,7 +144,6 @@ class Window(Tk):
 
     def load_grid(self, fp, line):
         if self.sudoku.load(fp, line % self.book_length):
-            print(f"Load Successful\n")
             self.level.configure(text=str(self.line))
 
     def select(self, event):
@@ -162,6 +165,47 @@ class Window(Tk):
     def delete_value(self):
         if self.sudoku.sudoku[self.sudoku.selected_coords] == '.':
             self.sudoku.remove(*self.sudoku.selected_coords)
+
+    def keymap(self):
+        keymap = Toplevel(self)
+        keymap.title("Keymap")
+        keymap.resizable(False, False)
+        keymap.attributes('-toolwindow', 1)
+
+        Label(keymap,
+              text="<1 - 9>\t\tInsert digit\n"
+                   "<Left>\t\tMove selection left\n"
+                   "<Right>\t\tMove selection right\n"
+                   "<Up>\t\tMove selection up\n"
+                   "<Down>\t\tMove selection down\n"
+                   "<Delete>\tDelete cell content\n"
+                   "Left click\t\tSelect cell",
+              justify="left").pack(padx=5, pady=5)
+
+    def rules(self):
+        rules = Toplevel(self)
+        rules.title("Rules")
+        rules.resizable(False, False)
+        rules.attributes('-toolwindow', 1)
+
+        Label(rules,
+              text="Sudoku is a puzzle based on a small number of very simple rules:\n\n"
+                   "\t- Every square has to contain a single number\n"
+                   "\t- Only the numbers from 1 through to 9 can be used\n"
+                   "\t- Each 3×3 box can only contain each number from 1 to 9 once\n"
+                   "\t- Each vertical column can only contain each number from 1 to 9 once\n"
+                   "\t- Each horizontal row can only contain each number from 1 to 9 once",
+              justify='left').pack(padx=5, pady=5)
+
+    def about(self):
+        about = Toplevel(self)
+        about.title("Rules")
+        about.resizable(False, False)
+        about.attributes('-toolwindow', 1)
+
+        Label(about,
+              text="Sudoku built with tkinter and Python 3.\n"
+                   "This is a personnal exercise.").pack(padx=5, pady=5)
 
     @staticmethod
     def win():
