@@ -1,6 +1,6 @@
 from grid import Grid, GridRenderer
 from vector import *
-from tkinter import Tk, Menu, Frame, Button, Label, filedialog
+from tkinter import Tk, Menu, Frame, Button, Label, filedialog, messagebox
 from numpad import Numpad
 import os
 from PIL import Image, ImageTk
@@ -162,6 +162,10 @@ class Window(Tk):
     def delete_value(self):
         if self.sudoku.sudoku[self.sudoku.selected_coords] == '.':
             self.sudoku.remove(*self.sudoku.selected_coords)
+
+    @staticmethod
+    def win():
+        messagebox.showinfo(title="Game", message="You won !")
 
     @staticmethod
     def select_file():

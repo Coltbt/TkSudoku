@@ -10,6 +10,7 @@ class GridRenderer(Canvas):
         """
         Canvas.__init__(self, parent, *args, **kwargs)
 
+        self.parent = parent
         self.first_x, self.first_y = 0, 0
         self.cell_size = 0
         self.font = tk_font.Font(family="Arial", size=16)

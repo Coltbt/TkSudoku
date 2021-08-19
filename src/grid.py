@@ -102,9 +102,8 @@ class Grid:
         self.selected_coords = (line, column)
         self.renderer.change_select(self.selected_coords)
 
-    # TODO: implement Grid.win()
     def win(self):
-        print('Win')
+        self.renderer.parent.win()
 
     def __is_full(self):
         """
